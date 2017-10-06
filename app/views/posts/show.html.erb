@@ -20,5 +20,36 @@
   <%= @post.auther %>
 </p>
 
+  <%= content_tag :div,id: "comment-form", data:{
+    post: @post.to_json,
+    comments_attributes: @comments.to_json
+    } do %>
+
+  <h4>Commments: {{commentAttributes.size}} </h4>
+  <div v-for="(comment, index) in commentAttributes">
+  	<h3>{{comment.content}} ---------- {{comment.id}}</h3>
+  	<i v-if='comment.updated_at != ""'>{{comment.updated_at}}</i>
+  	<button v-on:click="removeComment(index)">Remove {{index}}</button>
+  </div>
+
+
+<h3>Comments: <%= @post.comments.count%></h3>
+<%# @post.comments.each do |comment| %>
+	<!-- 	<h5><%#= comment.content %></h5><br>
+		<i><%#= comment.updated_at%></i>
+		<br> -->
+<%# end %>
+<%= form_with(model: @post.comments.new) do |f|%>
+	<%= f.text_area :content %>
+	<%= f.hidden_field :post_id, value: @post.id %>
+	<%= f.submit%>
+<% end %>
+ <%end%>
 <%= link_to 'Edit', edit_post_path(@post) %> |
 <%= link_to 'Back', posts_path %>
+
+<script type="text/javascript">
+	document.addEventListener("turbolinks:load", function() {
+	 document.body.scrollTop = document.documentElement.scrollTop = 99999;
+	})
+</script>

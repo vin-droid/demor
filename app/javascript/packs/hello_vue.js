@@ -29,13 +29,30 @@
 
 import Vue from 'vue/dist/vue.esm'
 import App from '../app.vue'
+import TurbolinksAdapter from 'vue-turbolinks'
+import VueResource from 'vue-resource'
 
 document.addEventListener('turbolinks:load', () => {
+
+
+	var elemnt = document.getElementById("comment-form");
+	if(elemnt != null){
+
+  debugger;
+  var post = JSON.parse(elemnt.dataset.post);
+  var commentAttributes = JSON.parse(elemnt.dataset.commentsAttributes);
+  commentAttributes.forEach(function(comment){ comment._destroy = null });
+  // post.comment_attributes = commentAttributes;
   const app = new Vue({
-    el: '#hello',
+    el: elemnt,
     data: {
-      message: "Can you say hello?"
+      post: post,
+      commentAttributes: commentAttributes 
+    },
+    methods:{
+
     },
     components: { App }
   })
+	} 
 })
